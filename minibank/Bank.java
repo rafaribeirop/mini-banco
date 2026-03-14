@@ -12,10 +12,10 @@ public class Bank {
     //  Display account status
     System.out.println("Status: " + (status? "Open": "Closed"));
        if (isStatus()){
-            System.out.println("Account number: " + this.accNumber);
-            System.out.println("Name: " + this.owner);
-            System.out.println("Account type: "+ this.type);
-            System.out.format("Balance: $ %.2f%n",   this.balance);
+            System.out.println("Account number: " + this.getAccNumber());
+            System.out.println("Name: " + this.getOwner());
+            System.out.println("Account type: "+ this.getType());
+            System.out.format("Balance: $ %.2f%n",   this.getBalance());
        } 
     }
     // Set acc type (checking or savings)
@@ -66,6 +66,10 @@ public class Bank {
         return balance;
     }
 
+    public void setBalance(double balance){
+        this.balance = balance;
+    }
+
     public boolean isStatus() {
         return status;
     }
@@ -81,11 +85,11 @@ public class Bank {
     }
     
     public void closeAccount(){
-        if (balance > 0){
-            System.out.println("Your account still has a balance of $" + balance);
+        if (getBalance() > 0){
+            System.out.println("Your account still has a balance of $" + this.getBalance());
             System.out.println("You cannot close the account yet!");
         } else {
-            this.status = false;
+            this.setStatus(false);
             System.out.println("Account successfully closed!");
         }
     }
@@ -95,10 +99,10 @@ public class Bank {
         if (!isStatus()){
             System.out.println("Your account is closed");
         } else {
-            if (balance >= amount){
-                this.balance -= amount;
+            if (getBalance() >= amount){
+                setBalance(getBalance() - amount);
                 System.out.println("Withdrawal of $" + amount + " successful!");
-                System.out.println("Current balance: $" + balance);
+                System.out.println("Current balance: $" + this.getBalance());
             } else {
                 System.out.println("INSUFFICIENT FUNDS");
             }
@@ -109,9 +113,9 @@ public class Bank {
         if (!isStatus()){
             System.out.println("Your account is closed");
         } else {
-            this.balance += amount;
+            setBalance(getBalance() + amount);
             System.out.println("Deposit of $" + amount + " successful!");
-            System.out.println("Current balance: $" + balance);
+            System.out.println("Current balance: $" + this.getBalance());
         }
     }
 
@@ -122,13 +126,13 @@ public class Bank {
             System.out.println("Your account is closed");
         } else {
             //Fee: Checking = $12 | Savings = $20
-            int fee = (type.equalsIgnoreCase("Checking")? 12:20);
+            int fee = (getType().equalsIgnoreCase("Checking")? 12:20);
              if (monthlyFeePaid){
                 System.out.println("Monthly fee already paid");
             }
             if (!monthlyFeePaid){
-                if (this.balance >= fee){
-                    this.balance -= fee;
+                if (getBalance() >= fee){
+                    setBalance(getBalance() - fee);
                     System.out.println("Monthly fee of $" + fee + " paid");
                     monthlyFeePaid = true;
                 } else {
